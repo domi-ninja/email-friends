@@ -9,4 +9,9 @@ export default defineSchema({
   numbers: defineTable({
     value: v.number(),
   }),
+  emailsManaged: defineTable({
+    emailAddress: v.string(),
+    label: v.string(),
+    userId: v.string(),
+  }).index("by_email_address", ["emailAddress"]),
 });
