@@ -15,6 +15,7 @@ export default function ManageEmails() {
     const createEmailManaged = useMutation(api.emailManaged.createEmailManaged);
     const updateEmailManaged = useMutation(api.emailManaged.updateEmailManaged);
     const deleteEmailManaged = useMutation(api.emailManaged.deleteEmailManaged);
+    const toggleFiltering = useMutation(api.emailManaged.toggleFiltering);
     const emailsManaged = useQuery(api.emailManaged.getEmailsManaged);
 
     // Ensure the user's primary email is managed on component mount
@@ -61,7 +62,7 @@ export default function ManageEmails() {
         }
     };
 
-    const handleEdit = (email: { _id: Id<"emailsManaged">; emailAddress: string; label: string }) => {
+    const handleEdit = (email: { _id: Id<"emailsManaged">; emailAddress: string; label: string; filteringEnabled?: boolean }) => {
         setEditingId(email._id);
         setEditEmail({ emailAddress: email.emailAddress, label: email.label });
     };
@@ -76,6 +77,14 @@ export default function ManageEmails() {
         }
     };
 
+    const handleToggleFiltering = async (id: Id<"emailsManaged">) => {
+        try {
+            await toggleFiltering({ id });
+        } catch (error) {
+            console.error("Failed to toggle filtering:", error);
+        }
+    };
+
     const cancelEdit = () => {
         setEditingId(null);
         setEditEmail({ emailAddress: "", label: "" });
@@ -87,7 +96,7 @@ export default function ManageEmails() {
     };
 
     return (
-        <div className="">
+        <div className="max-w-4xl">
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold">Manage Emails</h1>
                 <button
@@ -200,22 +209,50 @@ export default function ManageEmails() {
                             // Display Mode
                             <div className="flex justify-between items-center">
                                 <div>
+                                    <p className="text-gray-600"><strong>{email.label}</strong>
+                                        &nbsp;
+                                        {new Date(email._creationTime).toLocaleDateString()}
+                                        &nbsp;
+                                        {new Date(email._creationTime).toLocaleTimeString()}</p>
                                     <p className="text-lg font-medium">{email.emailAddress}</p>
-                                    <p className="text-gray-600">{email.label}</p>
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={() => handleEdit(email)}
+                                            className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md transition-colors"
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(email._id)}
+                                            className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md transition-colors"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
                                 </div>
-                                <div className="flex gap-2">
+
+                                <div className="flex items-center gap-2">
+                                    <span className="text-sm text-gray-600 font-medium">
+                                        Filtering:
+                                    </span>
                                     <button
-                                        onClick={() => handleEdit(email)}
-                                        className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md transition-colors"
+                                        onClick={() => handleToggleFiltering(email._id)}
+                                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${email.filteringEnabled
+                                            ? 'bg-blue-600 hover:bg-blue-700'
+                                            : 'bg-gray-300 hover:bg-gray-400'
+                                            }`}
+                                        role="switch"
+                                        aria-checked={email.filteringEnabled}
+                                        aria-label="Toggle filtering"
                                     >
-                                        Edit
+                                        <span
+                                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${email.filteringEnabled ? 'translate-x-6' : 'translate-x-1'
+                                                }`}
+                                        />
                                     </button>
-                                    <button
-                                        onClick={() => handleDelete(email._id)}
-                                        className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md transition-colors"
-                                    >
-                                        Delete
-                                    </button>
+                                    <span className="text-sm text-gray-600">
+                                        {email.filteringEnabled ? 'On' : 'Off'}
+                                    </span>
                                 </div>
                             </div>
                         )}

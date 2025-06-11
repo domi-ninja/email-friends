@@ -13,5 +13,6 @@ export default defineSchema({
     emailAddress: v.string(),
     label: v.string(),
     userId: v.string(),
+    filteringEnabled: v.optional(v.boolean()),
   }).index("by_email_address", ["emailAddress"]),
 });

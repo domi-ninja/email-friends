@@ -1,6 +1,6 @@
 "use client";
 
-import { UserButton } from "@clerk/clerk-react";
+import { SignIn, UserButton } from "@clerk/clerk-react";
 import {
   Authenticated,
   Unauthenticated,
@@ -9,7 +9,6 @@ import {
 import { useState } from "react";
 import { api } from "../convex/_generated/api";
 import ManageEmails from "./screens/ManageEmails";
-
 export default function App() {
   return (
     <>
@@ -20,15 +19,15 @@ export default function App() {
         </a>
         <UserButton />
       </header>
-      <main className="p-8 flex flex-col gap-16">
+      <main className="">
         <Authenticated>
           <ManageEmails />
 
           <GmailSection />
         </Authenticated>
         <Unauthenticated>
-          <div>
-            <p>Log in to access your Gmail</p>
+          <div className="flex justify-center items-center">
+            <SignIn />
           </div>
         </Unauthenticated>
       </main>

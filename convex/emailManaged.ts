@@ -13,6 +13,7 @@ export const getEmailsManaged = query({
         emailAddress: v.string(),
         label: v.string(),
         userId: v.string(),
+        filteringEnabled: v.optional(v.boolean()),
     })),
     handler: async (ctx, args): Promise<Doc<"emailsManaged">[]> => {
         const identity = await ctx.auth.getUserIdentity();
@@ -36,6 +37,7 @@ export const getEmailManaged = query({
         emailAddress: v.string(),
         label: v.string(),
         userId: v.string(),
+        filteringEnabled: v.optional(v.boolean()),
     }), v.null()),
     handler: async (ctx, args): Promise<Doc<"emailsManaged"> | null> => {
         const identity = await ctx.auth.getUserIdentity();
@@ -54,6 +56,7 @@ export const createEmailManaged = mutation({
         emailAddress: v.string(),
         label: v.string(),
         userId: v.string(),
+        filteringEnabled: v.optional(v.boolean()),
     },
     returns: v.id("emailsManaged"),
     handler: async (ctx, args) => {
@@ -61,6 +64,7 @@ export const createEmailManaged = mutation({
             emailAddress: args.emailAddress,
             label: args.label,
             userId: args.userId,
+            filteringEnabled: args.filteringEnabled ?? false,
         });
     },
 });
@@ -70,6 +74,7 @@ export const updateEmailManaged = mutation({
         id: v.id("emailsManaged"),
         emailAddress: v.optional(v.string()),
         label: v.optional(v.string()),
+        filteringEnabled: v.optional(v.boolean()),
     },
     returns: v.null(),
     handler: async (ctx, args) => {
@@ -88,12 +93,15 @@ export const updateEmailManaged = mutation({
         }
 
         // Build update object with only provided fields
-        const updates: Partial<{ emailAddress: string; label: string }> = {};
+        const updates: Partial<{ emailAddress: string; label: string; filteringEnabled: boolean }> = {};
         if (args.emailAddress !== undefined) {
             updates.emailAddress = args.emailAddress;
         }
         if (args.label !== undefined) {
             updates.label = args.label;
+        }
+        if (args.filteringEnabled !== undefined) {
+            updates.filteringEnabled = args.filteringEnabled;
         }
 
         await ctx.db.patch(args.id, updates);
@@ -126,6 +134,34 @@ export const deleteEmailManaged = mutation({
     },
 });
 
+export const toggleFiltering = mutation({
+    args: {
+        id: v.id("emailsManaged"),
+    },
+    returns: v.null(),
+    handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
+        if (!identity) {
+            throw new Error("User not authenticated");
+        }
+
+        // Check if the email belongs to the current user
+        const existingEmail = await ctx.db.get(args.id);
+        if (!existingEmail) {
+            throw new Error("Email not found");
+        }
+        if (existingEmail.userId !== identity.subject) {
+            throw new Error("Not authorized to update this email");
+        }
+
+        // Toggle the filtering state
+        await ctx.db.patch(args.id, {
+            filteringEnabled: !existingEmail.filteringEnabled,
+        });
+        return null;
+    },
+});
+
 export const ensureEmailManaged = action({
     args: {
         label: v.string(),
@@ -137,6 +173,7 @@ export const ensureEmailManaged = action({
         emailAddress: v.string(),
         label: v.string(),
         userId: v.string(),
+        filteringEnabled: v.optional(v.boolean()),
     }),
     handler: async (ctx, args): Promise<Doc<"emailsManaged">> => {
 
@@ -157,6 +194,7 @@ export const ensureEmailManaged = action({
             emailAddress,
             label: args.label,
             userId: identity.subject,
+            filteringEnabled: false,
         });
 
         const emailManaged2 = await ctx.runQuery(api.emailManaged.getEmailManaged, {
