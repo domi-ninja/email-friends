@@ -98,7 +98,7 @@ export default function ManageEmails() {
     return (
         <div className="w-full md:max-w-4xl p-8">
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold">Manage Emails</h1>
+                <h1 className="text-2xl font-bold">Manage filtered email accounts</h1>
                 <button
                     onClick={() => setIsCreating(true)}
                     className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors"

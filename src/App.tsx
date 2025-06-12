@@ -24,6 +24,7 @@ export default function App() {
           <ManageEmails />
 
           <GmailSection />
+
         </Authenticated>
         <Unauthenticated>
           <div className="flex justify-center items-center">
@@ -98,7 +99,7 @@ function GmailSection() {
         </div>
       )}
 
-      <div className="flex flex-wrap gap-2">
+      {/* <div className="flex flex-wrap gap-2">
         <button
           className="bg-blue-600 text-white text-sm px-4 py-2 rounded-md border-2 disabled:opacity-50"
           onClick={handleGetProfile}
@@ -120,7 +121,7 @@ function GmailSection() {
         >
           {loading ? "Loading..." : "Get Recent Emails"}
         </button>
-      </div>
+      </div> */}
 
       {profile && (
         <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-md">
