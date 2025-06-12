@@ -1,5 +1,5 @@
 import { useUser } from "@clerk/clerk-react";
-import { useAction, useMutation, useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { useEffect, useState } from "react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
@@ -11,7 +11,7 @@ export default function ManageEmails() {
     const [newEmail, setNewEmail] = useState({ emailAddress: "", label: "" });
     const [editEmail, setEditEmail] = useState({ emailAddress: "", label: "" });
 
-    const ensureEmailManaged = useAction(api.emailManaged.ensureEmailManaged);
+    const ensureEmailManaged = useMutation(api.emailManaged.ensureEmailManaged);
     const createEmailManaged = useMutation(api.emailManaged.createEmailManaged);
     const updateEmailManaged = useMutation(api.emailManaged.updateEmailManaged);
     const deleteEmailManaged = useMutation(api.emailManaged.deleteEmailManaged);
@@ -22,11 +22,11 @@ export default function ManageEmails() {
     useEffect(() => {
         if (user?.emailAddresses[0]?.emailAddress) {
             ensureEmailManaged({
-                label: "Main",
+                label: "Primary Email",
                 emailAddress: user.emailAddresses[0].emailAddress,
             });
         }
-    }, [user, ensureEmailManaged]);
+    }, [user]);
 
     const handleCreateSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -96,7 +96,7 @@ export default function ManageEmails() {
     };
 
     return (
-        <div className="max-w-4xl">
+        <div className="w-full md:max-w-4xl p-8">
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold">Manage Emails</h1>
                 <button

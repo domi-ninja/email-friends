@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { api } from "./_generated/api";
 import { Doc } from "./_generated/dataModel";
-import { action, mutation, query } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 
 // Email management functions
 export const getEmailsManaged = query({
@@ -162,7 +162,7 @@ export const toggleFiltering = mutation({
     },
 });
 
-export const ensureEmailManaged = action({
+export const ensureEmailManaged = mutation({
     args: {
         label: v.string(),
         emailAddress: v.string(),
