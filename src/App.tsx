@@ -17,9 +17,9 @@ export default function App() {
 
   return (
     <>
-      <header className="sticky top-0 z-10 bg-light dark:bg-dark p-4 border-b-2 border-slate-200 dark:border-slate-800 flex flex-row justify-between items-center">
+      <header className="sticky top-0 z-10 bg-background border-b flex flex-row justify-between items-center p-4">
         <div className="flex flex-row items-center gap-4">
-          <Link to="/" className="flex flex-row items-center gap-2">
+          <Link to="/" className="flex flex-row items-center gap-2 text-foreground hover:text-foreground/80">
             <img src="/favicon.ico" alt="Email Friends" className="w-8 h-8" />
             Email Friends
           </Link>
@@ -28,7 +28,7 @@ export default function App() {
           <UserButton />
         </Authenticated>
         <Unauthenticated>
-          <Link to="/login" className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+          <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground">
             Login
           </Link>
         </Unauthenticated>
@@ -50,14 +50,14 @@ export default function App() {
           <Outlet />
         )}
       </main>
-      <footer className="text-sm text-gray-600 dark:text-gray-400 flex flex-row gap-4 justify-center bg-accent-200 py-8 bg-gray-200">
-        <Link to="/about" className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+      <footer className="text-sm text-muted-foreground flex flex-row gap-4 justify-center bg-accent py-8">
+        <Link to="/about" className="hover:text-foreground">
           About
         </Link>
-        <Link to="/privacy" className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+        <Link to="/privacy" className="hover:text-foreground">
           Privacy Policy
         </Link>
-        <Link to="/tos" className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+        <Link to="/tos" className="hover:text-foreground">
           Terms of Service
         </Link>
       </footer>
@@ -123,7 +123,7 @@ function GmailSection() {
   return (
     <div className="flex flex-col gap-4">
       {error && (
-        <div className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 p-3 rounded-md">
+        <div className="bg-destructive/20 text-destructive-foreground p-3 rounded-md">
           {error}
         </div>
       )}
@@ -153,7 +153,7 @@ function GmailSection() {
       </div> */}
 
       {profile && (
-        <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-md">
+        <div className="bg-card text-card-foreground p-4 rounded-md">
           <h3 className="font-bold mb-2">User Profile</h3>
           <p><strong>Name:</strong> {profile.name}</p>
           <p><strong>Email:</strong> {profile.email}</p>
@@ -164,7 +164,7 @@ function GmailSection() {
       )}
 
       {labels.length > 0 && (
-        <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-md">
+        <div className="bg-card text-card-foreground p-4 rounded-md">
           <h3 className="font-bold mb-2">Gmail Labels ({labels.length})</h3>
           <div className="grid grid-cols-2 gap-1 max-h-40 overflow-y-auto">
             {labels.map((label) => (
@@ -179,13 +179,14 @@ function GmailSection() {
                       setSelectedLabels(selectedLabels.filter(id => id !== label.id));
                     }
                   }}
+                  className="rounded border-input"
                 />
                 {label.name}
               </label>
             ))}
           </div>
           {selectedLabels.length > 0 && (
-            <div className="mt-2 text-sm">
+            <div className="mt-2 text-sm text-muted-foreground">
               <strong>Selected:</strong> {selectedLabels.join(", ")}
             </div>
           )}
@@ -193,23 +194,23 @@ function GmailSection() {
       )}
 
       {showMessages && messages.length > 0 && (
-        <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-md">
+        <div className="bg-card text-card-foreground p-4 rounded-md">
           <h3 className="font-bold mb-2">Recent Emails ({messages.length})</h3>
           <div className="space-y-3 max-h-96 overflow-y-auto">
             {messages.map((message) => (
-              <div key={message.id} className="border-l-4 border-blue-500 pl-3 bg-white dark:bg-slate-700 p-3 rounded">
+              <div key={message.id} className="border-l-4 border-primary pl-3 bg-background p-3 rounded">
                 <div className="font-semibold text-sm">{message.subject}</div>
-                <div className="text-xs text-gray-600 dark:text-gray-400">From: {message.from}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-500">{message.date}</div>
+                <div className="text-xs text-muted-foreground">From: {message.from}</div>
+                <div className="text-xs text-muted-foreground">{message.date}</div>
                 {message.snippet && (
-                  <div className="text-sm mt-1 text-gray-700 dark:text-gray-300">{message.snippet}</div>
+                  <div className="text-sm mt-1">{message.snippet}</div>
                 )}
                 {message.labelIds && message.labelIds.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-2">
                     {message.labelIds.slice(0, 5).map((labelId: string) => {
                       const label = labels.find(l => l.id === labelId);
                       return label ? (
-                        <span key={labelId} className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs px-2 py-1 rounded">
+                        <span key={labelId} className="bg-secondary text-secondary-foreground text-xs px-2 py-1 rounded">
                           {label.name}
                         </span>
                       ) : null;

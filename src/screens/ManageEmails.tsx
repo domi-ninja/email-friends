@@ -98,10 +98,10 @@ export default function ManageEmails() {
     return (
         <div className="w-full md:max-w-4xl p-8">
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold">Manage filtered email accounts</h1>
+                <h1 className="text-2xl font-bold text-foreground">Manage filtered email accounts</h1>
                 <button
                     onClick={() => setIsCreating(true)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors"
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md transition-colors"
                     disabled={isCreating}
                 >
                     Add Email
@@ -110,11 +110,11 @@ export default function ManageEmails() {
 
             {/* Create Email Form */}
             {isCreating && (
-                <div className="bg-gray-50 p-4 rounded-lg mb-6 border">
+                <div className="bg-card text-card-foreground p-4 rounded-lg mb-6 border">
                     <h2 className="text-lg font-semibold mb-4">Add New Email</h2>
                     <form onSubmit={handleCreateSubmit} className="space-y-4">
                         <div>
-                            <label htmlFor="create-email" className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="create-email" className="block text-sm font-medium text-foreground mb-1">
                                 Email Address
                             </label>
                             <input
@@ -122,12 +122,12 @@ export default function ManageEmails() {
                                 type="email"
                                 value={newEmail.emailAddress}
                                 onChange={(e) => setNewEmail(prev => ({ ...prev, emailAddress: e.target.value }))}
-                                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="w-full p-2 border border-input rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
                                 required
                             />
                         </div>
                         <div>
-                            <label htmlFor="create-label" className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="create-label" className="block text-sm font-medium text-foreground mb-1">
                                 Label
                             </label>
                             <input
@@ -135,21 +135,21 @@ export default function ManageEmails() {
                                 type="text"
                                 value={newEmail.label}
                                 onChange={(e) => setNewEmail(prev => ({ ...prev, label: e.target.value }))}
-                                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="w-full p-2 border border-input rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
                                 required
                             />
                         </div>
                         <div className="flex gap-2">
                             <button
                                 type="submit"
-                                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition-colors"
+                                className="bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md transition-colors"
                             >
                                 Create
                             </button>
                             <button
                                 type="button"
                                 onClick={cancelCreate}
-                                className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition-colors"
+                                className="bg-muted text-muted-foreground hover:bg-muted/90 px-4 py-2 rounded-md transition-colors"
                             >
                                 Cancel
                             </button>
@@ -161,12 +161,12 @@ export default function ManageEmails() {
             {/* Email List */}
             <div className="space-y-4">
                 {emailsManaged?.map((email) => (
-                    <div key={email._id} className="bg-white p-4 rounded-lg border shadow-sm">
+                    <div key={email._id} className="bg-card text-card-foreground p-4 rounded-lg border">
                         {editingId === email._id ? (
                             // Edit Form
                             <form onSubmit={handleEditSubmit} className="space-y-4">
                                 <div>
-                                    <label htmlFor="edit-email" className="block text-sm font-medium text-gray-700 mb-1">
+                                    <label htmlFor="edit-email" className="block text-sm font-medium text-foreground mb-1">
                                         Email Address
                                     </label>
                                     <input
@@ -174,11 +174,11 @@ export default function ManageEmails() {
                                         type="email"
                                         value={editEmail.emailAddress}
                                         onChange={(e) => setEditEmail(prev => ({ ...prev, emailAddress: e.target.value }))}
-                                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        className="w-full p-2 border border-input rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor="edit-label" className="block text-sm font-medium text-gray-700 mb-1">
+                                    <label htmlFor="edit-label" className="block text-sm font-medium text-foreground mb-1">
                                         Label
                                     </label>
                                     <input
@@ -186,20 +186,20 @@ export default function ManageEmails() {
                                         type="text"
                                         value={editEmail.label}
                                         onChange={(e) => setEditEmail(prev => ({ ...prev, label: e.target.value }))}
-                                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        className="w-full p-2 border border-input rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
                                     />
                                 </div>
                                 <div className="flex gap-2">
                                     <button
                                         type="submit"
-                                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors"
+                                        className="bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md transition-colors"
                                     >
                                         Save
                                     </button>
                                     <button
                                         type="button"
                                         onClick={cancelEdit}
-                                        className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition-colors"
+                                        className="bg-muted text-muted-foreground hover:bg-muted/90 px-4 py-2 rounded-md transition-colors"
                                     >
                                         Cancel
                                     </button>
@@ -209,22 +209,22 @@ export default function ManageEmails() {
                             // Display Mode
                             <div className="flex justify-between items-center">
                                 <div>
-                                    <p className="text-gray-600"><strong>{email.label}</strong>
+                                    <p className="text-muted-foreground"><strong>{email.label}</strong>
                                         &nbsp;
                                         {new Date(email._creationTime).toLocaleDateString()}
                                         &nbsp;
                                         {new Date(email._creationTime).toLocaleTimeString()}</p>
-                                    <p className="text-lg font-medium">{email.emailAddress}</p>
+                                    <p className="text-lg font-medium text-foreground">{email.emailAddress}</p>
                                     <div className="flex gap-2">
                                         <button
                                             onClick={() => handleEdit(email)}
-                                            className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md transition-colors"
+                                            className="bg-secondary text-secondary-foreground hover:bg-secondary/90 px-3 py-1 rounded-md transition-colors"
                                         >
                                             Edit
                                         </button>
                                         <button
                                             onClick={() => handleDelete(email._id)}
-                                            className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md transition-colors"
+                                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90 px-3 py-1 rounded-md transition-colors"
                                         >
                                             Delete
                                         </button>
@@ -232,25 +232,25 @@ export default function ManageEmails() {
                                 </div>
 
                                 <div className="flex items-center gap-2">
-                                    <span className="text-sm text-gray-600 font-medium">
+                                    <span className="text-sm text-muted-foreground font-medium">
                                         Filtering:
                                     </span>
                                     <button
                                         onClick={() => handleToggleFiltering(email._id)}
                                         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${email.filteringEnabled
-                                            ? 'bg-blue-600 hover:bg-blue-700'
-                                            : 'bg-gray-300 hover:bg-gray-400'
+                                            ? 'bg-primary hover:bg-primary/90'
+                                            : 'bg-muted hover:bg-muted/90'
                                             }`}
                                         role="switch"
                                         aria-checked={email.filteringEnabled}
                                         aria-label="Toggle filtering"
                                     >
                                         <span
-                                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${email.filteringEnabled ? 'translate-x-6' : 'translate-x-1'
+                                            className={`inline-block h-4 w-4 transform rounded-full bg-background transition-transform ${email.filteringEnabled ? 'translate-x-6' : 'translate-x-1'
                                                 }`}
                                         />
                                     </button>
-                                    <span className="text-sm text-gray-600">
+                                    <span className="text-sm text-muted-foreground">
                                         {email.filteringEnabled ? 'On' : 'Off'}
                                     </span>
                                 </div>
@@ -261,7 +261,7 @@ export default function ManageEmails() {
             </div>
 
             {emailsManaged?.length === 0 && (
-                <div className="text-center text-gray-500 py-8">
+                <div className="text-center text-muted-foreground py-8">
                     <p>No emails managed yet. Add your first email above.</p>
                 </div>
             )}
