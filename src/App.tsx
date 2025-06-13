@@ -1,37 +1,66 @@
 "use client";
 
-import { SignIn, UserButton } from "@clerk/clerk-react";
+import { UserButton } from "@clerk/clerk-react";
 import {
   Authenticated,
   Unauthenticated,
   useAction
 } from "convex/react";
 import { useState } from "react";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { api } from "../convex/_generated/api";
+import Landing from "./pages/Landing";
 import ManageEmails from "./screens/ManageEmails";
+
 export default function App() {
+  const location = useLocation();
+
   return (
     <>
       <header className="sticky top-0 z-10 bg-light dark:bg-dark p-4 border-b-2 border-slate-200 dark:border-slate-800 flex flex-row justify-between items-center">
-        <a href="/" className="flex flex-row items-center gap-2">
-          <img src="/favicon.ico" alt="Email Friends" className="w-8 h-8" />
-          Email Friends
-        </a>
-        <UserButton />
-      </header>
-      <main className="">
+        <div className="flex flex-row items-center gap-4">
+          <Link to="/" className="flex flex-row items-center gap-2">
+            <img src="/favicon.ico" alt="Email Friends" className="w-8 h-8" />
+            Email Friends
+          </Link>
+        </div>
         <Authenticated>
-          <ManageEmails />
-
-          <GmailSection />
-
+          <UserButton />
         </Authenticated>
         <Unauthenticated>
-          <div className="flex justify-center items-center">
-            <SignIn />
-          </div>
+          <Link to="/login" className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+            Login
+          </Link>
         </Unauthenticated>
+      </header>
+      <main className="container mx-auto px-4 py-8 min-h-[calc(100vh-10rem)]">
+        {location.pathname === "/" ? (
+          <>
+            <Authenticated>
+              <ManageEmails />
+              <GmailSection />
+            </Authenticated>
+            <Unauthenticated>
+              <div className="flex justify-center items-center flex-col gap-4">
+                <Landing />
+              </div>
+            </Unauthenticated>
+          </>
+        ) : (
+          <Outlet />
+        )}
       </main>
+      <footer className="text-sm text-gray-600 dark:text-gray-400 flex flex-row gap-4 justify-center bg-accent-200 py-8 bg-gray-200">
+        <Link to="/about" className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+          About
+        </Link>
+        <Link to="/privacy" className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+          Privacy Policy
+        </Link>
+        <Link to="/tos" className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+          Terms of Service
+        </Link>
+      </footer>
     </>
   );
 }
