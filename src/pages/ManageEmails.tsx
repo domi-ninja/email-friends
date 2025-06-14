@@ -3,7 +3,7 @@ import { useMutation, useQuery } from "convex/react";
 import { MoreVertical } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api } from "../../convex/_generated/api";
-import { Doc, Id } from "../../convex/_generated/dataModel";
+import { Id } from "../../convex/_generated/dataModel";
 
 export default function ManageEmails() {
     const { user } = useUser();
@@ -19,8 +19,13 @@ export default function ManageEmails() {
     const deleteEmailManaged = useMutation(api.emailManaged.deleteEmailManaged);
     const toggleFiltering = useMutation(api.emailManaged.toggleFiltering);
     const emailsManaged = useQuery(api.emailManaged.getEmailsManaged);
+    const emailFilteringStatuses = useQuery(api.emailFilteringStatus.getAllEmailFilteringStatuses);
 
-    const [emailFilteringStatus, setEmailFilteringStatus] = useState<Doc<"emailFilteringStatus"> | null>(null);
+    // Create a map of email IDs to their filtering status
+    const emailFilteringStatusDict = new Map<Id<"emailsManaged">, string>();
+    emailFilteringStatuses?.forEach(status => {
+        emailFilteringStatusDict.set(status.emailManagedId, `${status.status} ${new Date(status.lastUpdated || 0).toLocaleDateString()} ${new Date(status.lastUpdated || 0).toLocaleTimeString()}`);
+    });
 
     // Ensure the user's primary email is managed on component mount
     useEffect(() => {
@@ -31,18 +36,6 @@ export default function ManageEmails() {
             });
         }
     }, [user]);
-
-    const lastEmailFilteringStatus = useQuery(api.emailFilteringStatus.lastEmailFilteringStatus, {
-        emailManagedId: emailsManaged?.[0]?._id!
-    });
-    useEffect(() => {
-        if (emailsManaged) {
-            emailsManaged.forEach(async (email) => {
-                // const emailFilteringStatus = await lastEmailFilteringStatus({ emailManagedId: email._id });
-                // setEmailFilteringStatus(emailFilteringStatus);
-            });
-        }
-    }, [emailsManaged]);
 
     const handleCreateSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -293,8 +286,11 @@ export default function ManageEmails() {
                                     </div>
                                 </div>
                                 <div className="bg-accent p-2 rounded-md">
-                                    {email.label}
-                                    {emailFilteringStatus?.status}
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-sm">
+                                            Status: {emailFilteringStatusDict.get(email._id) || 'No status'}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         )}

@@ -158,6 +158,14 @@ export const toggleFiltering = mutation({
         await ctx.db.patch(args.id, {
             filteringEnabled: !existingEmail.filteringEnabled,
         });
+
+        if (!existingEmail.filteringEnabled) {
+            await ctx.runMutation(api.emailFilteringStatus.createEmailFilteringStatus, {
+                emailManagedId: args.id,
+                status: "pending",
+            });
+        }
+
         return null;
     },
 });
@@ -208,3 +216,4 @@ export const ensureEmailManaged = mutation({
         return emailManaged2;
     },
 });
+

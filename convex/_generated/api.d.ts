@@ -13,6 +13,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as emailFilteringStatus from "../emailFilteringStatus.js";
 import type * as emailManaged from "../emailManaged.js";
 import type * as gmail from "../gmail.js";
 
@@ -25,6 +26,7 @@ import type * as gmail from "../gmail.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  emailFilteringStatus: typeof emailFilteringStatus;
   emailManaged: typeof emailManaged;
   gmail: typeof gmail;
 }>;

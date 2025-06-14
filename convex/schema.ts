@@ -15,4 +15,10 @@ export default defineSchema({
     userId: v.string(),
     filteringEnabled: v.optional(v.boolean()),
   }).index("by_email_address", ["emailAddress"]),
+
+  emailFilteringStatus: defineTable({
+    emailManagedId: v.id("emailsManaged"),
+    status: v.string(),
+    lastUpdated: v.optional(v.number()),
+  }).index("by_email_managed_id", ["emailManagedId"]),
 });
