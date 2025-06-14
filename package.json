@@ -17,6 +17,7 @@
     "@clerk/clerk-react": "^5.25.0",
     "convex": "^1.23.0",
     "email-friends5": "link:",
+    "lucide-react": "^0.515.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.6.2"
