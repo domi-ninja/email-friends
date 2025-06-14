@@ -1,7 +1,7 @@
 
 export default function Landing() {
     return (
-        <>
+        <div>
             <main className="pt-16 pb-8">
                 <div className="mb-24">
                     {/* <div className="relative overflow-hidden bg-gradient-to-br from-black to-red-900 rounded-3xl p-12 mb-16 shadow-2xl">
@@ -134,7 +134,8 @@ export default function Landing() {
             </main>
 
             {/* <span className="bg-[#fcbd1c] text-black px-4 py-2 rounded-full">🔒 We have a business model, and it is not selling your data</span> */}
-        </>
+
+        </div>
     )
 }
 

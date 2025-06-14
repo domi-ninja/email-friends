@@ -3,7 +3,7 @@ import { useMutation, useQuery } from "convex/react";
 import { MoreVertical } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api } from "../../convex/_generated/api";
-import { Id } from "../../convex/_generated/dataModel";
+import { Doc, Id } from "../../convex/_generated/dataModel";
 
 export default function ManageEmails() {
     const { user } = useUser();
@@ -20,6 +20,8 @@ export default function ManageEmails() {
     const toggleFiltering = useMutation(api.emailManaged.toggleFiltering);
     const emailsManaged = useQuery(api.emailManaged.getEmailsManaged);
 
+    const [emailFilteringStatus, setEmailFilteringStatus] = useState<Doc<"emailFilteringStatus"> | null>(null);
+
     // Ensure the user's primary email is managed on component mount
     useEffect(() => {
         if (user?.emailAddresses[0]?.emailAddress) {
@@ -29,6 +31,18 @@ export default function ManageEmails() {
             });
         }
     }, [user]);
+
+    const lastEmailFilteringStatus = useQuery(api.emailFilteringStatus.lastEmailFilteringStatus, {
+        emailManagedId: emailsManaged?.[0]?._id!
+    });
+    useEffect(() => {
+        if (emailsManaged) {
+            emailsManaged.forEach(async (email) => {
+                // const emailFilteringStatus = await lastEmailFilteringStatus({ emailManagedId: email._id });
+                // setEmailFilteringStatus(emailFilteringStatus);
+            });
+        }
+    }, [emailsManaged]);
 
     const handleCreateSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -210,70 +224,77 @@ export default function ManageEmails() {
                             </form>
                         ) : (
                             // Display Mode
-                            <div className="flex flex-row justify-between items-center">
-                                <p className="text-lg font-medium text-foreground">{email.emailAddress}</p>
+                            <div>
+                                <div className="flex flex-row justify-between items-center">
+                                    <p className="text-lg font-medium text-foreground">{email.emailAddress}</p>
 
-                                <p className="text-muted-foreground"><strong>{email.label}</strong>
-                                    &nbsp;
-                                    {new Date(email._creationTime).toLocaleDateString()}
-                                    &nbsp;
-                                    {new Date(email._creationTime).toLocaleTimeString()}
-                                </p>
+                                    <p className="text-muted-foreground"><strong>{email.label}</strong>
+                                        &nbsp;
+                                        {new Date(email._creationTime).toLocaleDateString()}
+                                        &nbsp;
+                                        {new Date(email._creationTime).toLocaleTimeString()}
+                                    </p>
 
-                                <div className="flex items-center gap-4">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-sm text-muted-foreground font-medium">
-                                            Filtering:
-                                        </span>
-                                        <button
-                                            onClick={() => handleToggleFiltering(email._id)}
-                                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${email.filteringEnabled
-                                                ? 'bg-green-500 hover:bg-primary/90'
-                                                : 'bg-red-300 hover:bg-muted/90'
-                                                }`}
-                                            role="switch"
-                                            aria-checked={email.filteringEnabled}
-                                            aria-label="Toggle filtering"
-                                        >
-                                            <span
-                                                className={`inline-block h-4 w-4 transform rounded-full bg-background transition-transform ${email.filteringEnabled ? 'translate-x-6' : 'translate-x-1'
-                                                    }`}
-                                            />
-                                        </button>
-                                        <span className="text-sm text-muted-foreground">
-                                            {email.filteringEnabled ? 'On' : 'Off'}
-                                        </span>
-                                    </div>
+                                    <div className="flex items-center gap-4">
 
-                                    <div className="relative">
-                                        <button
-                                            onClick={(e) => {
-                                                setOpenDropdownId(openDropdownId === email._id ? null : email._id);
-                                                e.stopPropagation();
-                                            }}
-                                            className="p-2 hover:bg-muted rounded-full transition-colors"
-                                        >
-                                            <MoreVertical className="h-5 w-5 text-muted-foreground" />
-                                        </button>
-                                        {openDropdownId === email._id && (
-                                            <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-card border z-10">
-                                                <div className="py-1">
-                                                    <button
-                                                        onClick={() => handleEdit(email)}
-                                                        className="w-full text-left px-4 py-2 text-sm hover:bg-muted transition-colors"
-                                                    >
-                                                        Edit
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handleDelete(email._id)}
-                                                        className="w-full text-left px-4 py-2 text-sm text-destructive hover:bg-muted transition-colors"
-                                                    >
-                                                        Delete
-                                                    </button>
+                                        <div className="relative">
+                                            <button
+                                                onClick={(e) => {
+                                                    setOpenDropdownId(openDropdownId === email._id ? null : email._id);
+                                                    e.stopPropagation();
+                                                }}
+                                                className="p-2 hover:bg-muted rounded-full transition-colors"
+                                            >
+                                                <MoreVertical className="h-5 w-5 text-muted-foreground" />
+                                            </button>
+                                            {openDropdownId === email._id && (
+                                                <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-card border z-10">
+                                                    <div className="py-1">
+                                                        <button
+                                                            onClick={() => handleEdit(email)}
+                                                            className="w-full text-left px-4 py-2 text-sm hover:bg-muted transition-colors"
+                                                        >
+                                                            Edit
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleDelete(email._id)}
+                                                            className="w-full text-left px-4 py-2 text-sm text-destructive hover:bg-muted transition-colors"
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        )}
+                                            )}
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-sm text-muted-foreground font-medium">
+                                                Filtering:
+                                            </span>
+                                            <button
+                                                onClick={() => handleToggleFiltering(email._id)}
+                                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${email.filteringEnabled
+                                                    ? 'bg-green-500 hover:bg-primary/90'
+                                                    : 'bg-red-300 hover:bg-muted/90'
+                                                    }`}
+                                                role="switch"
+                                                aria-checked={email.filteringEnabled}
+                                                aria-label="Toggle filtering"
+                                            >
+                                                <span
+                                                    className={`inline-block h-4 w-4 transform rounded-full bg-background transition-transform ${email.filteringEnabled ? 'translate-x-6' : 'translate-x-1'
+                                                        }`}
+                                                />
+                                            </button>
+                                            <span className="text-sm text-muted-foreground">
+                                                {email.filteringEnabled ? 'On' : 'Off'}
+                                            </span>
+                                        </div>
+
                                     </div>
+                                </div>
+                                <div className="bg-accent p-2 rounded-md">
+                                    {email.label}
+                                    {emailFilteringStatus?.status}
                                 </div>
                             </div>
                         )}

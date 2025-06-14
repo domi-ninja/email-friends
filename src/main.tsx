@@ -4,32 +4,51 @@ import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import App from "./App.tsx";
+import App from "./App";
 import { ErrorBoundary } from "./ErrorBoundary.tsx";
 import "./index.css";
 import Login from "./pages/Login.tsx";
-import { routes } from "./routes";
+import Privacy from "./pages/Privacy.tsx";
+import Tos from "./pages/Tos.tsx";
+
+import Index from "./pages/Index.tsx";
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
+const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    children: routes,
-  },
-  {
-    path: "/login",
-    element: <Login />,
+    children: [
+      {
+        index: true,
+        element: <Index />,
+      },
+      {
+        path: "about",
+        element: <div>About Page</div>,
+      },
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "privacy",
+        element: <Privacy />,
+      },
+      {
+        path: "tos",
+        element: <Tos />,
+      },
+    ],
   },
 ]);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ErrorBoundary>
-      <ClerkProvider
-        publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}
-      >
+      <ClerkProvider publishableKey={clerkPubKey}>
         <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
           <RouterProvider router={router} />
         </ConvexProviderWithClerk>
