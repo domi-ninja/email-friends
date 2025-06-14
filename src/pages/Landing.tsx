@@ -23,7 +23,7 @@ export default function Landing() {
                     </div>
                 </div>
                 <div className="my-12 flex justify-center mb-32">
-                    <a href="https://domi.ninja/email-friends/signup" className="bg-gradient-to-r from-[#a5c7ff] via-[#d2ffd2] to-[#fcbd1c] text-black px-8 py-4 hover:opacity-90 text-xl font-semibold shadow-lg flex items-center gap-2 cursor-pointer border-b-2 border-black rounded-xl">
+                    <a href="/login" className="bg-gradient-to-r from-[#a5c7ff] via-[#d2ffd2] to-[#fcbd1c] text-black px-8 py-4 hover:opacity-90 text-xl font-semibold shadow-lg flex items-center gap-2 cursor-pointer border-b-2 border-black rounded-xl">
                         Get started in 5 minutes
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
@@ -33,7 +33,7 @@ export default function Landing() {
                 <div className="mx-auto max-w-5xl px-4">
                     <div className="flex flex-col lg:flex-row gap-8">
                         <div className="lg:w-3/5">
-                            <div className="rounded-lg border-2 border-black">
+                            <div className="rounded-lg border-2 border-black overflow-hidden">
                                 <div className="container-header text-center border-b-2 border-black text-on-surface text-2xl bg-black">
                                     <button className="w-full py-4 text-white flex items-center justify-center gap-2">
                                         <h2>How it works</h2>
@@ -78,9 +78,9 @@ export default function Landing() {
                             </div>
                         </div>
                         <div className="lg:w-2/5">
-                            <div className="rounded-lg border-2 border-black">
+                            <div className="rounded-lg border-2 border-black overflow-hidden">
                                 <div className="container-header text-center border-b-2 bg-black text-on-info text-2xl">
-                                    <h2 className="py-4 text-white">Other cool Features</h2>
+                                    <h2 className="py-4 text-wrounded-lghite">Other cool Features</h2>
                                 </div>
                                 <div className="flex flex-col gap-4 text-xl text-on-surface/70 p-6">
                                     <div className="w-full">

@@ -99,13 +99,13 @@ export default function ManageEmails() {
         <div className="w-full md:max-w-4xl p-8">
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold text-foreground">Manage filtered email accounts</h1>
-                <button
+                {/* <button
                     onClick={() => setIsCreating(true)}
                     className="bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md transition-colors"
                     disabled={isCreating}
                 >
                     Add Email
-                </button>
+                </button> */}
             </div>
 
             {/* Create Email Form */}
@@ -239,7 +239,7 @@ export default function ManageEmails() {
                                         onClick={() => handleToggleFiltering(email._id)}
                                         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${email.filteringEnabled
                                             ? 'bg-primary hover:bg-primary/90'
-                                            : 'bg-muted hover:bg-muted/90'
+                                            : 'bg-red-300 hover:bg-muted/90'
                                             }`}
                                         role="switch"
                                         aria-checked={email.filteringEnabled}

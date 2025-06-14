@@ -1,6 +1,5 @@
 "use client";
 
-import { UserButton } from "@clerk/clerk-react";
 import {
   Authenticated,
   Unauthenticated,
@@ -9,6 +8,7 @@ import {
 import { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { api } from "../convex/_generated/api";
+import Header from "./components/Header";
 import Landing from "./pages/Landing";
 import ManageEmails from "./screens/ManageEmails";
 
@@ -16,26 +16,11 @@ export default function App() {
   const location = useLocation();
 
   return (
-    <>
-      <header className="sticky top-0 z-10 bg-background border-b flex flex-row justify-between items-center p-4">
-        <div className="flex flex-row items-center gap-4">
-          <Link to="/" className="flex flex-row items-center gap-2 text-foreground hover:text-foreground/80">
-            <img src="/favicon.ico" alt="Email Friends" className="w-8 h-8" />
-            Email Friends
-          </Link>
-        </div>
-        <Authenticated>
-          <UserButton />
-        </Authenticated>
-        <Unauthenticated>
-          <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground">
-            Login
-          </Link>
-        </Unauthenticated>
-      </header>
+    <div>
+      <Header />
       <main className="container mx-auto px-4 py-8 min-h-[calc(100vh-10rem)]">
         {location.pathname === "/" ? (
-          <>
+          <div>
             <Authenticated>
               <ManageEmails />
               <GmailSection />
@@ -45,7 +30,7 @@ export default function App() {
                 <Landing />
               </div>
             </Unauthenticated>
-          </>
+          </div>
         ) : (
           <Outlet />
         )}
@@ -61,7 +46,7 @@ export default function App() {
           Terms of Service
         </Link>
       </footer>
-    </>
+    </div>
   );
 }
 
