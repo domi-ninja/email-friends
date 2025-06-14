@@ -1,3 +1,4 @@
+import { formatRelativeTime } from "@/utils/dateHelpers";
 import { useUser } from "@clerk/clerk-react";
 import { useMutation, useQuery } from "convex/react";
 import { MoreVertical } from "lucide-react";
@@ -24,7 +25,7 @@ export default function ManageEmails() {
     // Create a map of email IDs to their filtering status
     const emailFilteringStatusDict = new Map<Id<"emailsManaged">, string>();
     emailFilteringStatuses?.forEach(status => {
-        emailFilteringStatusDict.set(status.emailManagedId, `${status.status} ${new Date(status.lastUpdated || 0).toLocaleDateString()} ${new Date(status.lastUpdated || 0).toLocaleTimeString()}`);
+        emailFilteringStatusDict.set(status.emailManagedId, `${status.status} ${formatRelativeTime(status.lastUpdated || 0)}`);
     });
 
     // Ensure the user's primary email is managed on component mount
@@ -106,7 +107,7 @@ export default function ManageEmails() {
     };
 
     return (
-        <div className="w-full md:max-w-4xl p-8" onClick={() => setOpenDropdownId(null)}>
+        <div className="md:max-w-4xl md:p-8 p-2 min-h-96 mx-auto" onClick={() => setOpenDropdownId(null)}>
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold text-foreground">Manage filtered email accounts</h1>
                 {/* <button
@@ -121,7 +122,7 @@ export default function ManageEmails() {
             {/* Create Email Form */}
             {isCreating && (
                 <div className="bg-card text-card-foreground p-4 rounded-lg mb-6 border">
-                    <h2 className="text-lg font-semibold mb-4">Add New Email</h2>
+                    <h2 className=" font-semibold mb-4">Add New Email</h2>
                     <form onSubmit={handleCreateSubmit} className="space-y-4">
                         <div>
                             <label htmlFor="create-email" className="block text-sm font-medium text-foreground mb-1">
@@ -132,7 +133,7 @@ export default function ManageEmails() {
                                 type="email"
                                 value={newEmail.emailAddress}
                                 onChange={(e) => setNewEmail(prev => ({ ...prev, emailAddress: e.target.value }))}
-                                className="w-full p-2 border border-input rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
+                                className="w-full p-2 border border-input rounded-md focus:ring-2  focus:border-primary"
                                 required
                             />
                         </div>
@@ -145,7 +146,7 @@ export default function ManageEmails() {
                                 type="text"
                                 value={newEmail.label}
                                 onChange={(e) => setNewEmail(prev => ({ ...prev, label: e.target.value }))}
-                                className="w-full p-2 border border-input rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
+                                className="w-full p-2 border border-input rounded-md focus:ring-2  focus:border-primary"
                                 required
                             />
                         </div>
@@ -184,7 +185,7 @@ export default function ManageEmails() {
                                         type="email"
                                         value={editEmail.emailAddress}
                                         onChange={(e) => setEditEmail(prev => ({ ...prev, emailAddress: e.target.value }))}
-                                        className="w-full p-2 border border-input rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
+                                        className="w-full p-2 border border-input rounded-md focus:ring-2  focus:border-primary"
                                     />
                                 </div> */}
                                 <div>
@@ -196,7 +197,7 @@ export default function ManageEmails() {
                                         type="text"
                                         value={editEmail.label}
                                         onChange={(e) => setEditEmail(prev => ({ ...prev, label: e.target.value }))}
-                                        className="w-full p-2 border border-input rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
+                                        className="w-full p-2 border border-input rounded-md focus:ring-2  focus:border-primary"
                                     />
                                 </div>
                                 <div className="flex gap-2">
@@ -218,17 +219,15 @@ export default function ManageEmails() {
                         ) : (
                             // Display Mode
                             <div>
-                                <div className="flex flex-row justify-between items-center">
-                                    <p className="text-lg font-medium text-foreground">{email.emailAddress}</p>
+                                <div className="flex flex-col sm:flex-row justify-between items-start md:items-center gap-2">
+                                    <p className="font-medium text-foreground flex-1">{email.emailAddress}</p>
+                                    <p className="text-muted-foreground whitespace-nowrap"><strong>{email.label}</strong></p>
 
-                                    <p className="text-muted-foreground"><strong>{email.label}</strong>
-                                        &nbsp;
-                                        {new Date(email._creationTime).toLocaleDateString()}
-                                        &nbsp;
-                                        {new Date(email._creationTime).toLocaleTimeString()}
+                                    <p className="text-muted-foreground  whitespace-nowrap">
+                                        {formatRelativeTime(email._creationTime)}
                                     </p>
 
-                                    <div className="flex items-center gap-4">
+                                    <div className="flex items-center gap-4 flex-col md:flex-row justify-start md:justify-end w-full">
 
                                         <div className="relative">
                                             <button
@@ -241,7 +240,7 @@ export default function ManageEmails() {
                                                 <MoreVertical className="h-5 w-5 text-muted-foreground" />
                                             </button>
                                             {openDropdownId === email._id && (
-                                                <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-card border z-10">
+                                                <div className="absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-card border z-10">
                                                     <div className="py-1">
                                                         <button
                                                             onClick={() => handleEdit(email)}

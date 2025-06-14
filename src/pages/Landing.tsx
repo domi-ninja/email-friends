@@ -34,8 +34,8 @@ export default function Landing() {
                     <div className="flex flex-col lg:flex-row gap-8">
                         <div className="lg:w-3/5">
                             <div className="rounded-lg border-2 border-black overflow-hidden">
-                                <div className="container-header text-center border-b-2 border-black text-on-surface text-2xl bg-black">
-                                    <button className="w-full py-4 text-white flex items-center justify-center gap-2">
+                                <div className="container-header text-center border-b-2 border-black text-on-surface text-lg bg-black">
+                                    <button className="w-full py-2 text-white flex items-center justify-center gap-2">
                                         <h2>How it works</h2>
                                         <svg className="w-6 h-6 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
@@ -44,16 +44,16 @@ export default function Landing() {
                                 </div>
                                 <div>
                                     <div className="flex flex-col md:flex-row items-center gap-8 max-w-6xl mx-auto py-8 px-8">
-                                        <ol className="w-full space-y-6 text-lg">
-                                            <li className="flex items-center bg-surface-alt/30 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+                                        <ol className="w-full space-y-2">
+                                            <li className="flex items-center bg-surface-alt/30 p-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
                                                 <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-black text-white rounded-full mr-4 font-semibold">1</span>
                                                 <span className="text-on-surface/90">My open source bot connects to your gmail</span>
                                             </li>
-                                            <li className="flex items-center bg-surface-alt/30 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+                                            <li className="flex items-center bg-surface-alt/30 p-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
                                                 <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-black text-white rounded-full mr-4 font-semibold">2</span>
                                                 <span className="text-on-surface/90">Emails from unknown contacts are moved into a separate folder</span>
                                             </li>
-                                            <li className="flex flex-col bg-surface-alt/30 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+                                            <li className="flex flex-col bg-surface-alt/30 p-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
                                                 <div className="flex items-center">
                                                     <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-black text-white rounded-full mr-4 font-semibold">3</span>
                                                     <span className="text-on-surface/90">Once per day, you get a digest of these</span>
@@ -64,11 +64,11 @@ export default function Landing() {
                                                     className="w-full rounded-lg mt-4 object-cover max-h-100 object-top"
                                                 />
                                             </li>
-                                            <li className="flex items-center bg-surface-alt/30 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+                                            <li className="flex items-center bg-surface-alt/30 p-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
                                                 <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-black text-white rounded-full mr-4 font-semibold">4</span>
                                                 <span className="text-on-surface/90">You can accept or reject contacts with a click</span>
                                             </li>
-                                            <li className="flex items-center bg-surface-alt/30 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+                                            <li className="flex items-center bg-surface-alt/30 p-2 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
                                                 <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-black text-white rounded-full mr-4 font-semibold">5</span>
                                                 <span className="text-on-surface/90">Accepted contacts are added to your address book and will be considered "Friends"</span>
                                             </li>
@@ -79,10 +79,10 @@ export default function Landing() {
                         </div>
                         <div className="lg:w-2/5">
                             <div className="rounded-lg border-2 border-black overflow-hidden">
-                                <div className="container-header text-center border-b-2 bg-black text-on-info text-2xl">
-                                    <h2 className="py-4 text-wrounded-lghite">Other cool Features</h2>
+                                <div className="container-header text-center border-b-2 bg-black text-on-info text-lg">
+                                    <h2 className="py-2 text-white">Other cool Features</h2>
                                 </div>
-                                <div className="flex flex-col gap-4 text-xl text-on-surface/70 p-6">
+                                <div className="flex flex-col gap-4 text-md text-on-surface/70 p-6">
                                     <div className="w-full">
                                         <button className="w-full bg-[#9dffce] text-black px-4 py-2 rounded-lg hover:opacity-90 flex items-center justify-between">
                                             <span>🌿 No AI involved</span>
@@ -90,7 +90,7 @@ export default function Landing() {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                                             </svg>
                                         </button>
-                                        <div className="mt-2 p-4 bg-surface-alt/30 rounded-lg shadow-sm">
+                                        <div className="mt-2 p-2 bg-surface-alt/30 rounded-lg shadow-sm">
                                             We use simple rules and filters. This makes it easy for you to understand what is happening.
                                         </div>
                                     </div>
@@ -101,7 +101,7 @@ export default function Landing() {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                                             </svg>
                                         </button>
-                                        <div className="mt-2 p-4 bg-surface-alt/30 rounded-lg shadow-sm">
+                                        <div className="mt-2 p-2 bg-surface-alt/30 rounded-lg shadow-sm">
                                             The bot ignores notification emails. Only emails by humans are processed, so you don't miss anything, and you do not have to whitelist a million notification email addresses.
                                         </div>
                                     </div>
@@ -112,7 +112,7 @@ export default function Landing() {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                                             </svg>
                                         </button>
-                                        <div className="mt-2 p-4 bg-surface-alt/30 rounded-lg shadow-sm">
+                                        <div className="mt-2 p-2 bg-surface-alt/30 rounded-lg shadow-sm">
                                             No tracking, no ads, funny business. Everything is lovingly crafted by me, a single developer!
                                         </div>
                                     </div>

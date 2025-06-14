@@ -10,24 +10,19 @@
     --card-foreground: #020817;
     --popover: #ffffff;
     --popover-foreground: #020817;
-    --primary: #0f172a;
-    --primary-foreground: #f8fafc;
-    --secondary: #f1f5f9;
-    --secondary-foreground: #0f172a;
+    --primary: #9dffce;
+    --primary-foreground: #0f172a;
+    --secondary: #fff;
+    --secondary-foreground: #000;
     --muted: #f1f5f9;
     --muted-foreground: #64748b;
-    --accent: #d1e8ff;
+    --accent: #fff1d2;
     --accent-foreground: #0f172a;
     --destructive: #ef4444;
     --destructive-foreground: #f8fafc;
     --border: #e2e8f0;
     --input: #e2e8f0;
-    --ring: #020817;
-    --chart-1: #0f172a;
-    --chart-2: #64748b;
-    --chart-3: #f1f5f9;
-    --chart-4: #e2e8f0;
-    --chart-5: #ef4444;
+    --ring: #fcbd1c;
 
     --radius: 0.5rem;
   }
@@ -51,12 +46,11 @@
     --destructive-foreground: #f8fafc;
     --border: #1e293b;
     --input: #1e293b;
-    --ring: #cbd5e1;
-    --chart-1: #f8fafc;
-    --chart-2: #94a3b8;
-    --chart-3: #1e293b;
-    --chart-4: #cbd5e1;
-    --chart-5: #7f1d1d;
+    --ring: #fcbd1c;
+  }
+
+  * {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
 }
 

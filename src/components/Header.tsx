@@ -15,7 +15,7 @@ export default function Header() {
                 <UserButton />
             </Authenticated>
             <Unauthenticated>
-                <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground hover:underline px-4 py-2 rounded-md border-2 border-foreground">
+                <Link to="/login" className="bg-secondary text-on-secondary text-sm hover:underline px-4 py-2 rounded-md border-2 border-foreground">
                     Login
                 </Link>
             </Unauthenticated>
