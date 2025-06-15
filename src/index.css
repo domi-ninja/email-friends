@@ -5,34 +5,34 @@
 @layer base {
   :root {
     --background: #ffffff;
-    --foreground: #020817;
+    --foreground: #000;
     --card: #ffffff;
-    --card-foreground: #020817;
+    --card-foreground: #000;
     --popover: #ffffff;
-    --popover-foreground: #020817;
+    --popover-foreground: #000;
     --primary: #9dffce;
-    --primary-foreground: #0f172a;
+    --primary-foreground: #000;
     --secondary: #fff;
     --secondary-foreground: #000;
     --muted: #f1f5f9;
     --muted-foreground: #64748b;
     --accent: #fff1d2;
-    --accent-foreground: #0f172a;
+    --accent-foreground: #000;
     --destructive: #ffbaba;
-    --destructive-foreground: #0f172a;
+    --destructive-foreground: #000;
     --border: #a1acbb;
     --input: #e2e8f0;
-    --ring: #fcbd1c;
+    --ring: #009c4e;
 
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: #020817;
+    --background: #000;
     --foreground: #f8fafc;
-    --card: #020817;
+    --card: #000;
     --card-foreground: #f8fafc;
-    --popover: #020817;
+    --popover: #000;
     --popover-foreground: #f8fafc;
     --primary: #f8fafc;
     --primary-foreground: #0f172a;
@@ -50,7 +50,7 @@
   }
 
   * {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring;
   }
 }
 
