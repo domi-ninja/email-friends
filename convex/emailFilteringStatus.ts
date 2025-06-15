@@ -2,6 +2,22 @@ import { v } from "convex/values";
 import { Doc, Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 
+
+export const purgeOldEmailFilteringStatuses = mutation({
+    args: {
+        emailManagedId: v.id("emailsManaged"),
+    },
+    returns: v.null(),
+    handler: async (ctx, args): Promise<void> => {
+        const old = await ctx.db.query("emailFilteringStatus")
+            .filter((q) => q.eq(q.field("emailManagedId"), args.emailManagedId) &&
+                q.lt(q.field("lastUpdated"), Date.now() - 60 * 60 * 24)).collect();
+        for (const status of old) {
+            await ctx.db.delete(status._id);
+        }
+    }
+})
+
 export const createEmailFilteringStatus = mutation({
     args: {
         emailManagedId: v.id("emailsManaged"),

@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { api } from "./_generated/api";
-import { Doc } from "./_generated/dataModel";
-import { mutation, query } from "./_generated/server";
+import { Doc, Id } from "./_generated/dataModel";
+import { action, mutation, query } from "./_generated/server";
 
 // Email management functions
 export const getEmailsManaged = query({
@@ -134,9 +134,67 @@ export const deleteEmailManaged = mutation({
     },
 });
 
-export const toggleFiltering = mutation({
+export const runFiltering = action({
     args: {
         id: v.id("emailsManaged"),
+    },
+    returns: v.array(v.object({
+        id: v.string(),
+        emailManagedId: v.id("emailsManaged"),
+        fromServer: v.string(),
+        from: v.string(),
+        subject: v.string(),
+        body: v.string(),
+    })),
+    handler: async (ctx, args) => {
+
+        await ctx.runMutation(api.emailFilteringStatus.purgeOldEmailFilteringStatuses, {
+            emailManagedId: args.id,
+        });
+
+        await ctx.runMutation(api.emailFilteringStatus.createEmailFilteringStatus, {
+            emailManagedId: args.id,
+            status: "Filtering started, accessing gmail",
+        });
+        // Schedule a delayed completion status update
+        await ctx.scheduler.runAfter(2000, api.emailFilteringStatus.createEmailFilteringStatus, {
+            emailManagedId: args.id,
+            status: "Filtering completed!",
+        });
+
+        return [
+            {
+                id: "1",
+                emailManagedId: args.id,
+                fromServer: "mail.google.com",
+                from: "john@company.com",
+                subject: "Nice to see you",
+                body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            },
+            {
+                id: "2",
+                emailManagedId: args.id,
+                fromServer: "smtp.amazon.com",
+                from: "thomas287138@gmail.com",
+                subject: "Great opportunity for you",
+                body: "Dear Sir or Madam, I hope this email finds you well. I am writing to you because I think you would be a great fit for our company. We are looking for a new employee and I think you would be a great fit. Please let me know if you are interested.",
+            },
+            {
+                id: "3",
+                emailManagedId: args.id,
+                fromServer: "mail.facebook.com",
+                from: "bob.smith@facebookmail.com",
+                subject: "Meeting times",
+                body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            },
+        ];
+    },
+});
+
+export const setFiltering = mutation({
+    args: {
+        id: v.id("emailsManaged"),
+        filteringEnabled: v.boolean(),
     },
     returns: v.null(),
     handler: async (ctx, args) => {
@@ -158,17 +216,17 @@ export const toggleFiltering = mutation({
         await ctx.db.patch(args.id, {
             filteringEnabled: !existingEmail.filteringEnabled,
         });
-
-        if (!existingEmail.filteringEnabled) {
-            await ctx.runMutation(api.emailFilteringStatus.createEmailFilteringStatus, {
-                emailManagedId: args.id,
-                status: "pending",
-            });
-        }
-
-        return null;
     },
 });
+
+export interface EmailFiltered {
+    id: string;
+    emailManagedId: Id<"emailsManaged">;
+    fromServer: string;
+    from: string;
+    subject: string;
+    body: string;
+}
 
 export const ensureEmailManaged = mutation({
     args: {

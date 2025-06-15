@@ -1,6 +1,7 @@
 "use client";
 
 import { Link, Outlet } from "react-router-dom";
+import { Toaster } from "sonner";
 import Header from "./components/Header";
 
 export default function App() {
@@ -21,6 +22,19 @@ export default function App() {
           Terms of Service
         </Link>
       </footer>
+      <Toaster
+        toastOptions={{
+          style: {
+            background: "var(--background)",
+            color: "var(--foreground)",
+          },
+        }}
+        theme="system"
+        position="top-right"
+        expand={true}
+        richColors={true}
+        closeButton={false}
+      />
     </div>
   );
 }
