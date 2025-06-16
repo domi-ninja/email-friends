@@ -1,10 +1,14 @@
 import { EmailFiltered } from "../../convex/emailManaged";
 import EmailDisplay from "./EmailDisplay";
 
-export default function EmailsAcceptOrDeny(emails: EmailFiltered[]) {
+interface EmailsAcceptOrDenyProps {
+    emails: EmailFiltered[];
+}
+
+export default function EmailsAcceptOrDeny({ emails }: EmailsAcceptOrDenyProps) {
     return (
         <>
-            {emailsFilteredDict?.get(email._id)?.map((email) => (
+            {emails?.map((email: EmailFiltered) => (
                 <div key={email.emailManagedId} className="py-2">
                     <div className="flex gap-2 justify-end items-end">
                         <button className="text-on-destructive bg-destructive px-4 py-2 rounded-md">

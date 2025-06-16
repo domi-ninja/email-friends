@@ -15,7 +15,7 @@ export const getEmailsManaged = query({
         userId: v.string(),
         filteringEnabled: v.optional(v.boolean()),
     })),
-    handler: async (ctx, args): Promise<Doc<"emailsManaged">[]> => {
+    handler: async (ctx, _args): Promise<Doc<"emailsManaged">[]> => {
         const identity = await ctx.auth.getUserIdentity();
         if (!identity) {
             throw new Error("User not authenticated");
