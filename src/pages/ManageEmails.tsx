@@ -282,216 +282,7 @@ export default function ManageEmails() {
                                     </button>
                                 </div>
                             </form>
-                        ) : (
-                            // Display Mode
-                            <div>
-                                <div className="flex flex-col sm:flex-row justify-between items-start md:items-center gap-2 border-b-2 border-border py-2 px-4">
-                                    <p className="text-monospace font-medium text-foreground flex-1">{email.emailAddress}</p>
-                                    <p className="text-muted-foreground whitespace-nowrap"><strong>{email.label}</strong></p>
-
-                                    <p className="text-muted-foreground  whitespace-nowrap">
-                                        {formatRelativeTime(email._creationTime)}
-                                    </p>
-
-                                    <div className="flex items-center gap-4 flex-col md:flex-row justify-start md:justify-end w-full">
-
-                                        <div className="relative">
-                                            <button
-                                                onClick={(e) => {
-                                                    setOpenDropdownId(openDropdownId === email._id ? null : email._id);
-                                                    e.stopPropagation();
-                                                }}
-                                                className="p-2 hover:bg-muted rounded-full transition-colors"
-                                            >
-                                                <MoreVertical className="h-5 w-5 text-muted-foreground" />
-                                            </button>
-                                            {openDropdownId === email._id && (
-                                                <div className="absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-card border z-10">
-                                                    <div className="py-1">
-                                                        <button
-                                                            onClick={() => handleEdit(email)}
-                                                            className="w-full text-left px-4 py-2 text-sm hover:bg-muted transition-colors"
-                                                        >
-                                                            Edit
-                                                        </button>
-                                                        <button
-                                                            onClick={() => handleDelete(email._id)}
-                                                            className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-muted transition-colors"
-                                                        >
-                                                            Delete
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <span className="text-sm text-muted-foreground font-medium">
-                                                Filtering:
-                                            </span>
-                                            <button
-                                                onClick={() => handleToggleFiltering(email._id, email.filteringEnabled ?? false)}
-                                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors 
-                                                    border-2 border-border
-                                                    ${email.filteringEnabled
-                                                        ? 'bg-primary'
-                                                        : 'bg-destructive'
-                                                    }`}
-                                                role="switch"
-                                                aria-checked={email.filteringEnabled}
-                                                aria-label="Toggle filtering"
-                                            >
-                                                <span
-                                                    className={`inline-block h-4 w-4 transform rounded-full bg-background transition-transform ${email.filteringEnabled ? 'translate-x-6' : 'translate-x-1'
-                                                        }`}
-                                                />
-                                            </button>
-                                            <span className="text-sm text-muted-foreground">
-                                                {email.filteringEnabled ? 'On' : 'Off'}
-                                            </span>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-
-                                {
-                                    emailsFilteredDict?.get(email._id)?.length && (
-                                        <div className="pt-4 px-2 bg-accent rounded-md">
-                                            {emailsFilteredDict?.get(email._id)?.map((email) => (
-                                                <div className="py-6">
-                                                    <EmailDisplay email={email} />
-                                                    <div className="flex gap-2 justify-end items-end">
-                                                        <button onClick={() => handleMute(email)} className="text-on-destructive bg-destructive px-4 py-2 rounded-md hover:bg-secondary hover:text-secondary-foreground">
-                                                            Mute
-                                                        </button>
-                                                        <button onClick={() => handleAddFriend(email)} className="text-on-primary bg-primary px-4 py-2 rounded-md hover:bg-primary/90 hover:text-primary-foreground">
-                                                            Add friend
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    ) || (
-                                        email.filteringEnabled && emailFilteringStatusDict.get(email._id)?.status.includes("complete") && (
-                                            <div className="py-4">
-                                                <div className="flex flex-col items-center justify-center py-4 border-2 border-primary bg-primary/20 text-primary-foreground rounded-md">
-                                                    <span>All done! </span>
-                                                    <div className="flex flex-row items-center gap-2 text-muted-foreground pt-2">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-info">
-                                                            <circle cx="12" cy="12" r="10" />
-                                                            <path d="M12 16v-4" />
-                                                            <path d="M12 8h.01" />
-                                                        </svg>
-                                                        <span className="text-sm">You will find more email friend requests in your inbox tomorrow</span>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        ) || (
-                                            <div className="">
-                                            </div>
-                                        )
-                                    )
-                                }
-
-                                {
-                                    email.filteringEnabled && (
-                                        <div className="bg-accent p-2 rounded-md">
-                                            <div className="flex justify-between items-center">
-                                                <span className="text-sm">
-                                                    <span className="text-muted-foreground">
-                                                        {emailFilteringStatusDict.get(email._id)?.lastUpdated &&
-                                                            ` (${formatRelativeTime(emailFilteringStatusDict.get(email._id)?.lastUpdated || 0)})`}
-                                                    </span>
-                                                    <span className="text-muted-foreground pl-2">
-                                                        {emailFilteringStatusDict.get(email._id)?.status || 'No status'}
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    )}
-                            </div>
-                        )}
-
-                        {
-                            email.filteringEnabled && (
-                                <div className="flex flex-row gap-2 pt-2">
-                                    {
-                                        emailsMuted.length > 0 && (
-                                            <div className="bg-muted p-2 rounded-md flex-1 border-2 border-destructive">
-                                                <h2 className="text-lg font-semibold">Muted senders</h2>
-                                                <div className="flex flex-col gap-2">
-                                                    {emailsMuted.map((email) => (
-                                                        <div key={email.id} className="flex justify-between items-center p-2 bg-background rounded-md">
-                                                            <p>{email.from}</p>
-                                                            <div className="relative">
-                                                                <button
-                                                                    onClick={(e) => {
-                                                                        setOpenMutedDropdownId(openMutedDropdownId === email.id ? null : email.id);
-                                                                        e.stopPropagation();
-                                                                    }}
-                                                                    className="p-1 hover:bg-muted rounded-full transition-colors"
-                                                                >
-                                                                    <MoreVertical className="h-4 w-4 text-muted-foreground" />
-                                                                </button>
-                                                                {openMutedDropdownId === email.id && (
-                                                                    <div className="absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-card border z-10">
-                                                                        <div className="py-1">
-                                                                            <button
-                                                                                onClick={() => handleUnmute(email)}
-                                                                                className="w-full text-left px-4 py-2 text-sm hover:bg-muted transition-colors"
-                                                                            >
-                                                                                Unmute
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )
-                                    }
-                                    {
-                                        emailsAddedAsFriends.length > 0 && (
-                                            <div className="bg-muted p-2 rounded-md flex-1 border-2 border-primary">
-                                                <h2 className="text-lg font-semibold">Added friends</h2>
-                                                <div className="flex flex-col gap-2">
-                                                    {emailsAddedAsFriends.map((email) => (
-                                                        <div key={email.id} className="flex justify-between items-center p-2 bg-background rounded-md">
-                                                            <p>{email.from}</p>
-                                                            <div className="relative">
-                                                                <button
-                                                                    onClick={(e) => {
-                                                                        setOpenAddedAsFriendsDropdownId(openAddedAsFriendsDropdownId === email.id ? null : email.id);
-                                                                        e.stopPropagation();
-                                                                    }}
-                                                                    className="p-1 hover:bg-muted rounded-full transition-colors"
-                                                                >
-                                                                    <MoreVertical className="h-4 w-4 text-muted-foreground" />
-                                                                </button>
-                                                                {openAddedAsFriendsDropdownId === email.id && (
-                                                                    <div className="absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-card border z-10">
-                                                                        <div className="py-1">
-                                                                            <button
-                                                                                onClick={() => handleRemoveFriend(email)}
-                                                                                className="w-full text-left px-4 py-2 text-sm hover:bg-muted transition-colors"
-                                                                            >
-                                                                                Remove friend
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )
-                                    }
-                                </div>
-                            )}
+                        ) : managedEmailDisplay(email)}
                     </div>
                 ))}
 
@@ -507,4 +298,257 @@ export default function ManageEmails() {
             }
         </div >
     );
+
+
+    function managedEmailDisplay(email: Doc<"emailsManaged">) {
+        return (
+            <div>
+                {renderEmailHeader(email)}
+                {email.filteringEnabled && (
+                    <div className="p-4">
+                        {renderFilteredEmails(email)}
+                        {renderFilteringStatus(email)}
+                        {renderMutedAndFriendsSection(email)}
+                    </div>
+                )}
+            </div>
+        );
+    }
+
+    function renderEmailHeader(email: Doc<"emailsManaged">) {
+        return (
+            <div className="flex flex-col sm:flex-row justify-between items-start md:items-center gap-2 border-b-2 border-border py-2 px-4">
+                <p className="text-monospace font-medium text-foreground flex-1">{email.emailAddress}</p>
+                <p className="text-muted-foreground whitespace-nowrap"><strong>{email.label}</strong></p>
+                <p className="text-muted-foreground whitespace-nowrap">
+                    {formatRelativeTime(email._creationTime)}
+                </p>
+                <div className="flex items-center gap-4 flex-col md:flex-row justify-start md:justify-end w-full">
+                    {renderDropdownMenu(email)}
+                    {renderFilteringToggle(email)}
+                </div>
+            </div>
+        );
+    }
+
+    function renderDropdownMenu(email: Doc<"emailsManaged">) {
+        return (
+            <div className="relative">
+                <button
+                    onClick={(e) => {
+                        setOpenDropdownId(openDropdownId === email._id ? null : email._id);
+                        e.stopPropagation();
+                    }}
+                    className="p-2 hover:bg-muted rounded-full transition-colors"
+                >
+                    <MoreVertical className="h-5 w-5 text-muted-foreground" />
+                </button>
+                {openDropdownId === email._id && (
+                    <div className="absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-card border z-10">
+                        <div className="py-1">
+                            <button
+                                onClick={() => handleEdit(email)}
+                                className="w-full text-left px-4 py-2 text-sm hover:bg-muted transition-colors"
+                            >
+                                Edit
+                            </button>
+                            <button
+                                onClick={() => handleDelete(email._id)}
+                                className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-muted transition-colors"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
+        );
+    }
+
+    function renderFilteringToggle(email: Doc<"emailsManaged">) {
+        return (
+            <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground font-medium">Filtering:</span>
+                <button
+                    onClick={() => handleToggleFiltering(email._id, email.filteringEnabled ?? false)}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors 
+                        border-2 border-border
+                        ${email.filteringEnabled ? 'bg-primary' : 'bg-destructive'}`}
+                    role="switch"
+                    aria-checked={email.filteringEnabled}
+                    aria-label="Toggle filtering"
+                >
+                    <span
+                        className={`inline-block h-4 w-4 transform rounded-full bg-background transition-transform 
+                            ${email.filteringEnabled ? 'translate-x-6' : 'translate-x-1'}`}
+                    />
+                </button>
+                <span className="text-sm text-muted-foreground">
+                    {email.filteringEnabled ? 'On' : 'Off'}
+                </span>
+            </div>
+        );
+    }
+
+    function renderFilteredEmails(email: Doc<"emailsManaged">) {
+        const filteredEmails = emailsFilteredDict?.get(email._id);
+
+        if (filteredEmails?.length) {
+            return (
+                <div className="px-2 bg-accent rounded-md">
+                    {filteredEmails.map((filteredEmail) => (
+                        <div key={filteredEmail.id} className="py-6">
+                            <EmailDisplay email={filteredEmail} />
+                            <div className="flex gap-2 justify-end items-end">
+                                <button
+                                    onClick={() => handleMute(filteredEmail)}
+                                    className="text-on-destructive bg-destructive px-4 py-2 rounded-md hover:bg-secondary hover:text-secondary-foreground"
+                                >
+                                    Mute
+                                </button>
+                                <button
+                                    onClick={() => handleAddFriend(filteredEmail)}
+                                    className="text-on-primary bg-primary px-4 py-2 rounded-md hover:bg-primary/90 hover:text-primary-foreground"
+                                >
+                                    Add friend
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            );
+        }
+
+        if (email.filteringEnabled && emailFilteringStatusDict.get(email._id)?.status.includes("complete")) {
+            return (
+                <div className="pb-4">
+                    <div className="flex flex-col items-center justify-center py-4 border-2 border-primary bg-primary/20 text-primary-foreground rounded-md">
+                        <span>All done!</span>
+                        <div className="flex flex-row items-center gap-2 text-muted-foreground pt-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-info">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M12 16v-4" />
+                                <path d="M12 8h.01" />
+                            </svg>
+                            <span className="text-sm">You will find more email friend requests in your inbox tomorrow</span>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        return null;
+    }
+
+    function renderFilteringStatus(email: Doc<"emailsManaged">) {
+        if (!email.filteringEnabled) return null;
+
+        const status = emailFilteringStatusDict.get(email._id);
+        return (
+            <div className="bg-accent p-2 rounded-md">
+                <div className="flex justify-between items-center">
+                    <span className="text-sm">
+                        <span className="text-muted-foreground">
+                            {status?.lastUpdated && ` (${formatRelativeTime(status.lastUpdated)})`}
+                        </span>
+                        <span className="text-muted-foreground pl-2">
+                            {status?.status || 'No status'}
+                        </span>
+                    </span>
+                </div>
+            </div>
+        );
+    }
+
+    function renderMutedAndFriendsSection(email: Doc<"emailsManaged">) {
+        if (!email.filteringEnabled) return null;
+
+        const hasMutedEmails = emailsMuted.length > 0;
+        const hasFriendEmails = emailsAddedAsFriends.length > 0;
+
+        if (!hasMutedEmails && !hasFriendEmails) return null;
+
+        return (
+            <div className="flex flex-row gap-2 pt-2">
+                {hasMutedEmails && renderMutedSenders()}
+                {hasFriendEmails && renderAddedFriends()}
+            </div>
+        );
+    }
+
+    function renderMutedSenders() {
+        return (
+            <div className="bg-muted p-2 rounded-md flex-1 border-2 border-destructive">
+                <h2 className="text-lg font-semibold">Muted senders</h2>
+                <div className="flex flex-col gap-2">
+                    {emailsMuted.map((email) => (
+                        <div key={email.id} className="flex justify-between items-center p-2 bg-background rounded-md">
+                            <p>{email.from}</p>
+                            <div className="relative">
+                                <button
+                                    onClick={(e) => {
+                                        setOpenMutedDropdownId(openMutedDropdownId === email.id ? null : email.id);
+                                        e.stopPropagation();
+                                    }}
+                                    className="p-1 hover:bg-muted rounded-full transition-colors"
+                                >
+                                    <MoreVertical className="h-4 w-4 text-muted-foreground" />
+                                </button>
+                                {openMutedDropdownId === email.id && (
+                                    <div className="absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-card border z-10">
+                                        <div className="py-1">
+                                            <button
+                                                onClick={() => handleUnmute(email)}
+                                                className="w-full text-left px-4 py-2 text-sm hover:bg-muted transition-colors"
+                                            >
+                                                Unmute
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
+    function renderAddedFriends() {
+        return (
+            <div className="bg-muted p-2 rounded-md flex-1 border-2 border-primary">
+                <h2 className="text-lg font-semibold">Added friends</h2>
+                <div className="flex flex-col gap-2">
+                    {emailsAddedAsFriends.map((email) => (
+                        <div key={email.id} className="flex justify-between items-center p-2 bg-background rounded-md">
+                            <p>{email.from}</p>
+                            <div className="relative">
+                                <button
+                                    onClick={(e) => {
+                                        setOpenAddedAsFriendsDropdownId(openAddedAsFriendsDropdownId === email.id ? null : email.id);
+                                        e.stopPropagation();
+                                    }}
+                                    className="p-1 hover:bg-muted rounded-full transition-colors"
+                                >
+                                    <MoreVertical className="h-4 w-4 text-muted-foreground" />
+                                </button>
+                                {openAddedAsFriendsDropdownId === email.id && (
+                                    <div className="absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-card border z-10">
+                                        <div className="py-1">
+                                            <button
+                                                onClick={() => handleRemoveFriend(email)}
+                                                className="w-full text-left px-4 py-2 text-sm hover:bg-muted transition-colors"
+                                            >
+                                                Remove friend
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
 }

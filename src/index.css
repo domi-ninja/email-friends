@@ -16,12 +16,12 @@
     --secondary-foreground: #000;
     --muted: #f1f5f9;
     --muted-foreground: #64748b;
-    --accent: #fff1d2;
+    --accent: #f1f5f9;
     --accent-foreground: #000;
     --destructive: #ffbaba;
     --destructive-foreground: #000;
     --border: #a1acbb;
-    --input: #e2e8f0;
+    --input: #d9ffec;
     --ring: #009c4e;
 
     --radius: 0.5rem;
