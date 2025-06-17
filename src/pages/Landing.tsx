@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 export default function Landing() {
     return (
@@ -23,12 +24,12 @@ export default function Landing() {
                     </div>
                 </div>
                 <div className="my-12 flex justify-center mb-32">
-                    <a href="/login" className="bg-gradient-to-r from-[#a5c7ff] via-[#d2ffd2] to-[#fcbd1c] text-black px-8 py-4 hover:opacity-90 text-xl font-semibold shadow-lg flex items-center gap-2 cursor-pointer border-b-2 border-black rounded-xl">
+                    <Link to="/login" className="bg-gradient-to-r from-[#a5c7ff] via-[#d2ffd2] to-[#fcbd1c] text-black px-8 py-4 hover:opacity-90 text-xl font-semibold shadow-lg flex items-center gap-2 cursor-pointer border-b-2 border-black rounded-xl">
                         Get started in 5 minutes
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                         </svg>
-                    </a>
+                    </Link>
                 </div>
                 <div className="mx-auto max-w-5xl px-4">
                     <div className="flex flex-col lg:flex-row gap-8">
